@@ -94,6 +94,7 @@ def sort_artifacts_based_on_name(basename):
                 "lib/lib*.so.*",
                 # static libs
                 "lib/lib*.a",
+                "lib/lib*.lib",
                 "lib/*.a.lib",
                 "lib/*_a.lib",
                 "lib/*static.lib",
@@ -135,6 +136,7 @@ def sort_artifacts_based_on_name(basename):
         glob_install(
             include=[
                 "lib/lib*.a",
+                "lib/lib*.lib",
                 "lib/*.a.lib",
                 "lib/*_a.lib",
                 "lib/*static.lib",

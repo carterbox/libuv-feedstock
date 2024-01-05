@@ -60,7 +60,7 @@ outputs:
     test:
       commands:
         - test -f "$PREFIX/lib/libuv.a"  # [unix]
-        - if not exist %LIBRARY_LIB%\uv_a.lib (exit 1)    # [win]
+        - if not exist %LIBRARY_LIB%\libuv.lib (exit 1)    # [win]
         - if not exist %LIBRARY_LIB%\pkgconfig/libuv-static.pc (exit 1)  # [win]
 
   - name: libuv{{ so_major }}
@@ -108,3 +108,4 @@ extra:
   recipe-maintainers:
     - frol
     - mariusvniekerk
+  feedstock-name: libuv
