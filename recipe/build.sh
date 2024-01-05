@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -x
+set -ex
+
+mkdir $SRC_DIR/stage
 
 # We are going to disable some tests on qemu based platforms
 # if [ "${target_platform}" == "linux-aarch64" ] || [ "${target_platform}" == "linux-ppc64le" ]; then
@@ -34,7 +36,7 @@ fi
 ./configure \
    --disable-dependency-tracking \
    --disable-silent-rules \
-   --prefix="$PREFIX" \
+   --prefix="$SRC_DIR/stage" \
 
 make
 if [[ "${CONDA_BUILD_CROSS_COMPILATION}" != "1" ]]; then

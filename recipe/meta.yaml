@@ -1,9 +1,8 @@
 {% set version = "1.46.0" %}
 {% set so_major = "1" %}
-{% set library = "Library/" if (target_platform == "win-64") else "" %}
 
 package:
-  name: libuv
+  name: libuv-split
   version: {{ version }}
 
 source:
@@ -30,6 +29,7 @@ requirements:
 outputs:
 
   - name: libuv
+    script: install.py
     build:
       run_exports:
         - {{ pin_subpackage('libuv' ~ so_major) }}
@@ -40,13 +40,6 @@ outputs:
         - {{ pin_subpackage('libuv' ~ so_major, exact=True) }}
       run:
         - {{ pin_subpackage('libuv' ~ so_major, exact=True) }}
-    files:
-      - {{ library }}/include/uv.h
-      - {{ library }}/include/uv
-      - {{ library }}/lib/libuv{{ SHLIB_EXT }}  # [unix]
-      - {{ library }}/lib/uv.lib  # [win]
-      - {{ library }}/lib/pkgconfig/libuv.pc
-      - {{ library }}/lib/cmake/libuv
     test:
       commands:
       # Needed
@@ -63,10 +56,7 @@ outputs:
         - test ! -f "$PREFIX/lib/libuv.a"     # [unix]
 
   - name: libuv-static
-    files:
-      - {{ library }}/lib/libuv.a  # [unix]
-      - {{ library }}/lib/uv_a.lib  # [win]
-      - {{ library }}/lib/pkgconfig/libuv-static.pc
+    script: install.py
     test:
       commands:
         - test -f "$PREFIX/lib/libuv.a"  # [unix]
@@ -74,6 +64,7 @@ outputs:
         - if not exist %LIBRARY_LIB%\pkgconfig/libuv-static.pc (exit 1)  # [win]
 
   - name: libuv{{ so_major }}
+    script: install.py
     build:
       run_exports:
         - {{ pin_subpackage('libuv' ~ so_major) }}
@@ -82,10 +73,6 @@ outputs:
         - {{ compiler('c') }}
       run:
         - {{ pin_subpackage('_libuv_api', max_pin='x.x.x') }}               # [win]
-    files:
-      - {{ library }}/lib/libuv.so.{{ so_major }}*                    # [linux]
-      - {{ library }}/lib/libuv.{{ so_major }}*.dylib                 # [osx]
-      - {{ library }}/bin/uv.dll                                      # [win]
     test:
       commands:
         - test -f "$PREFIX/lib/libuv.so.1"  # [linux]
@@ -117,6 +104,7 @@ about:
   dev_url: https://github.com/libuv/libuv
 
 extra:
+  feedstock-name: libuv
   recipe-maintainers:
     - frol
     - mariusvniekerk
